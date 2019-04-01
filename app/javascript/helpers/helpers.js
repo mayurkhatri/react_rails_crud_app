@@ -2,7 +2,7 @@ export const isEmptyObject = obj => Object.keys(obj).length === 0;
 
 export const validateEvent = (event) => {
   const errors = {};
-  console.log(event);
+  console.log("in validate event", event);
   if(event.event_type === '') {
     errors.event_type = 'You must enter and event type';
   }
