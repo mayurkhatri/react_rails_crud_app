@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import EventNotFound from './EventNotFound';
 
 const Event = ({event}) => {
+  if (!event) return <EventNotFound />;
+
   return(
     <div className="eventContainer">
       <h2>

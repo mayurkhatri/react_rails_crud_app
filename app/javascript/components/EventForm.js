@@ -22,12 +22,17 @@ class EventForm extends React.Component {
   componentDidMount() {
     new Pikaday({
       field: this.dateInput.current,
+      toString: date => formatDate(date),
       onSelect: (date) => {
         const formattedDate = formatDate(date);
         this.dateInput.current.value = formattedDate;
         this.updateEvent('event_date', formattedDate);
       },
     });
+  }
+
+  componentWillReceiveProps({ event }) {
+    this.setState({ event });
   }
 
   updateEvent(key, value) {
@@ -43,10 +48,12 @@ class EventForm extends React.Component {
     e.preventDefault();
     const { event } = this.state;
     const errors = validateEvent(event);
+
     if(!isEmptyObject(errors)) {
       this.setState({ errors });
     } else {
-      console.log(event);
+      const { onSubmit } = this.props;
+      onSubmit(event);
     }
   }
 
@@ -77,6 +84,9 @@ class EventForm extends React.Component {
   }
 
   render() {
+    const { event } = this.state;
+    const { path } = this.props;
+
     return (
       <div>
         <h2>New Event</h2>
@@ -156,6 +166,7 @@ class EventForm extends React.Component {
 
 EventForm.propTypes = {
   event: propTypes.shape(),
+  onSubmit: propTypes.func.isRequired,
 };
 
 EventForm.defaultProps = {

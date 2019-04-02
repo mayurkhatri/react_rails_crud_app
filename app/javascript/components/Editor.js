@@ -15,12 +15,32 @@ class Editor extends React.Component {
     this.state = {
       events: null,
     }
+    this.addEvent = this.addEvent.bind(this);
   }
 
   componentDidMount() {
     axios
       .get('/api/events.json')
       .then(response => this.setState({ events: response.data }))
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  addEvent(newEvent) {
+    axios
+      .post('/api/events.json', newEvent)
+      .then((response) => {
+        const savedEvent = response.data;
+        alert('Event Added!');
+        // origin code does not get id from savedEvent
+        const id = savedEvent["id"];
+        this.setState(prevState => ({
+          events: [...prevState.events, savedEvent],
+        }));
+        const { history } = this.props;
+        history.push(`/events/${id}`);
+      })
       .catch((error) => {
         console.log(error);
       });
@@ -43,7 +63,7 @@ class Editor extends React.Component {
         <div className="grid">
         <EventList events={events} activeId={Number(eventId)}/>
           <Switch>
-            <PropsRoute path="/events/new" component={EventForm} />
+            <PropsRoute path="/events/new" component={EventForm} onSubmit={this.addEvent} />
             <PropsRoute
               path="/events/:id"
               component={Event}
@@ -58,6 +78,7 @@ class Editor extends React.Component {
 
 Editor.propTypes = {
   match: PropTypes.shape(),
+  history: PropTypes.shape({ push: PropTypes.func }).isRequired,
 };
 
 Editor.defaultProps = {
