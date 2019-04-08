@@ -8,6 +8,8 @@ import EventList from './EventList';
 import PropsRoute from './PropsRoute';
 import Event from './Event';
 import EventForm from './EventForm';
+import { success } from '../helpers/notifications';
+import { handleAjaxError } from '../helpers/helpers';
 
 class Editor extends React.Component {
   constructor(props) {
@@ -16,15 +18,14 @@ class Editor extends React.Component {
       events: null,
     }
     this.addEvent = this.addEvent.bind(this);
+    this.deleteEvent = this.deleteEvent.bind(this);
   }
 
   componentDidMount() {
     axios
       .get('/api/events.json')
       .then(response => this.setState({ events: response.data }))
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(handleAjaxError);
   }
 
   addEvent(newEvent) {
@@ -32,7 +33,8 @@ class Editor extends React.Component {
       .post('/api/events.json', newEvent)
       .then((response) => {
         const savedEvent = response.data;
-        alert('Event Added!');
+        success("Event Added");
+        // alert('Event Added!');
         // origin code does not get id from savedEvent
         const id = savedEvent["id"];
         this.setState(prevState => ({
@@ -41,9 +43,27 @@ class Editor extends React.Component {
         const { history } = this.props;
         history.push(`/events/${id}`);
       })
-      .catch((error) => {
-        console.log(error);
-      });
+      .catch(handleAjaxError);
+  }
+
+  deleteEvent(eventId) {
+    const sure = window.confirm("Are you sure?");
+    if (sure){
+      axios
+        .delete(`/api/events/${eventId}.json`)
+        .then((response) => {
+          if (response.status === 204) {
+            // alert('Event deleted');
+            success('Event deleted');
+            const { history } = this.props;
+            history.push('/events');
+
+            const { events } = this.state;
+            this.setState({ events: events.filter(event => event.id !== eventId) });
+          }
+        })
+        .catch(handleAjaxError);
+    }
   }
 
   render() {
@@ -65,9 +85,17 @@ class Editor extends React.Component {
           <Switch>
             <PropsRoute path="/events/new" component={EventForm} onSubmit={this.addEvent} />
             <PropsRoute
+              exact
+              path="/events/:id/edit"
+              component={EventForm}
+              event={event}
+              onSubmit={this.updateEvent}
+            />
+            <PropsRoute
               path="/events/:id"
               component={Event}
               event={event}
+              onDelete={this.deleteEvent}
             />
           </Switch>
         </div>

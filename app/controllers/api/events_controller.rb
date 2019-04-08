@@ -8,7 +8,6 @@ class Api::EventsController < ApplicationController
   end
 
   def show
-    byebug
     respond_with Event.find(params[:id])
   end
 

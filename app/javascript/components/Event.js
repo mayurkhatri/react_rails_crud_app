@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import EventNotFound from './EventNotFound';
 
-const Event = ({event}) => {
+const Event = ({ event, onDelete }) => {
   if (!event) return <EventNotFound />;
 
   return(
@@ -56,6 +56,7 @@ const Event = ({event}) => {
 
 Event.propTypes = {
   event: PropTypes.shape(),
+  onDelete: PropTypes.func.isRequired,
 }
 
 Event.defaultProps = {
