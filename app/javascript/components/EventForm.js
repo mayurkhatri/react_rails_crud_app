@@ -99,7 +99,9 @@ class EventForm extends React.Component {
                 type="text"
                 id="event_type"
                 name="event_type"
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+                value={event.event_type}
+              />
             </label>
           </div>
           <div>
@@ -111,6 +113,8 @@ class EventForm extends React.Component {
                name="event_date"
                ref={this.dateInput}
                autoComplete="off"
+               value={event.event_date}
+               onChange={this.handleInputChange}
               />
             </label>
           </div>
@@ -122,7 +126,8 @@ class EventForm extends React.Component {
                 rows="10"
                 id="title"
                 name="title"
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+                value={event.title} />
             </label>
           </div>
           <div>
@@ -132,7 +137,8 @@ class EventForm extends React.Component {
                 type="text"
                 id="speaker"
                 name="speaker"
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+                value={event.speaker} />
             </label>
           </div>
           <div>
@@ -142,7 +148,8 @@ class EventForm extends React.Component {
                 type="text"
                 id="host"
                 name="host"
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+                value={event.host} />
             </label>
           </div>
           <div>
@@ -152,7 +159,8 @@ class EventForm extends React.Component {
                 type="checkbox"
                 id="published"
                 name="published"
-                onChange={this.handleInputChange} />
+                onChange={this.handleInputChange}
+                checked={event.published} />
             </label>
           </div>
           <div className="form-actions">
@@ -167,6 +175,7 @@ class EventForm extends React.Component {
 EventForm.propTypes = {
   event: propTypes.shape(),
   onSubmit: propTypes.func.isRequired,
+  path: propTypes.string.isRequired,
 };
 
 EventForm.defaultProps = {

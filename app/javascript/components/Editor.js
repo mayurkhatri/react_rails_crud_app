@@ -19,6 +19,7 @@ class Editor extends React.Component {
     }
     this.addEvent = this.addEvent.bind(this);
     this.deleteEvent = this.deleteEvent.bind(this);
+    this.updateEvent = this.updateEvent.bind(this);
   }
 
   componentDidMount() {
@@ -42,6 +43,21 @@ class Editor extends React.Component {
         }));
         const { history } = this.props;
         history.push(`/events/${id}`);
+      })
+      .catch(handleAjaxError);
+  }
+
+  updateEvent(updatedEvent) {
+    axios
+      .put(`/api/events/${updatedEvent.id}.json`, updatedEvent)
+      .then(() => {
+        success("Event updated");
+        const { events } = this.state;
+        const idx = events.findIndex(event => event.id === updatedEvent.id);
+        events[idx] = updatedEvent;
+        const { history } = this.props;
+        history.push(`/events/${updatedEvent.id}`);
+        this.setState({ events });
       })
       .catch(handleAjaxError);
   }
