@@ -1,5 +1,7 @@
 import { error } from './notifications';
 
+const isValidDate = dateObj => !Number.isNaN(Date.parse(dateObj));
+
 export const isEmptyObject = obj => Object.keys(obj).length === 0;
 
 export const validateEvent = (event) => {
@@ -25,6 +27,10 @@ export const validateEvent = (event) => {
     errors.host = 'You must enter atleast one host';
   }
 
+  if(!isValidDate(event.event_date)) {
+    errors.event_date = 'You must enter a valid date';
+  }
+
   console.log("errors", errors);
   return errors;
 }
@@ -41,3 +47,4 @@ export const handleAjaxError = (err) => {
   error("Something went wrong.");
   console.warn(err);
 }
+

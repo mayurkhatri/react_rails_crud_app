@@ -3,6 +3,7 @@ import propTypes from 'prop-types';
 import {validateEvent, isEmptyObject, formatDate} from '../helpers/helpers';
 import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
+import { Link } from 'react-router-dom';
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -32,6 +33,7 @@ class EventForm extends React.Component {
   }
 
   componentWillReceiveProps({ event }) {
+    console.log("in componentWillReceiveProps");
     this.setState({ event });
   }
 
@@ -85,11 +87,13 @@ class EventForm extends React.Component {
 
   render() {
     const { event } = this.state;
+    const cancelURL = event.id ? `/events/${event.id}` : '/events';
+    const title = event.id ? `${event.event_date} - ${event.event_type}` : 'New Event';
     const { path } = this.props;
 
     return (
       <div>
-        <h2>New Event</h2>
+        <h2>{title}</h2>
         {this.renderErrors()}
         <form className="eventForm" onSubmit={this.handleSubmit}>
           <div>
@@ -165,6 +169,7 @@ class EventForm extends React.Component {
           </div>
           <div className="form-actions">
             <button type="submit">Save</button>
+            <Link to={cancelURL}>Cancel</Link>
           </div>
         </form>
       </div>
