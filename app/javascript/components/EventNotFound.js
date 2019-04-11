@@ -1,5 +1,5 @@
 import React from 'react';
 
-const EventNotFound = () => <p>Event not found!</p>
+const EventNotFound = () => <p>Event not found!</p>;
 
 export default EventNotFound;

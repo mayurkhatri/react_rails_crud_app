@@ -4,6 +4,7 @@ import {validateEvent, isEmptyObject, formatDate} from '../helpers/helpers';
 import Pikaday from 'pikaday';
 import 'pikaday/css/pikaday.css';
 import { Link } from 'react-router-dom';
+import EventNotFound from './EventNotFound';
 
 class EventForm extends React.Component {
   constructor(props) {
@@ -87,9 +88,12 @@ class EventForm extends React.Component {
 
   render() {
     const { event } = this.state;
+    const { path } = this.props;
+
+    if(!event.id && path === '/events/:id/edit') return <EventNotFound />;
+
     const cancelURL = event.id ? `/events/${event.id}` : '/events';
     const title = event.id ? `${event.event_date} - ${event.event_type}` : 'New Event';
-    const { path } = this.props;
 
     return (
       <div>
