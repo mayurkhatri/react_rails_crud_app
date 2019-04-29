@@ -1,6 +1,11 @@
 {
   "name": "react_rails_crud_app",
   "private": true,
+  "engines": {
+    "node": "11.8.0",
+    "npm": "6.8.0",
+    "yarn": "1.13.0"
+  }
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
     "@rails/webpacker": "^4.0.0-rc.7",
