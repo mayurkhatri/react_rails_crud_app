@@ -31,6 +31,10 @@ header h1, header h1 a{
   text-decoration: none;
 }
 
+header h1, header h1 a{
+  display: block;
+}
+
 header h1 a:hover {
   text-decoration: underline;
 }
